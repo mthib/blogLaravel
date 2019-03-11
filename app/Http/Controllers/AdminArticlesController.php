@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\ArticleRequest;
+use Auth;
 
 class AdminArticlesController extends Controller
 {
@@ -13,8 +14,13 @@ class AdminArticlesController extends Controller
      * @return \Illuminate\Http\Response
      */
     function index() {
+
+        $user = \App\User::where('name', Auth::user()->name )->first();
+        if($user->role == "admin")
+            $posts = \App\Post::where('post_type', 'article')->orderBy('post_date', 'desc')->get(); //get all posts
+        else
+            $posts = \App\Post::where('post_type', 'article')->where('post_author',$user->id)->orderBy('post_date', 'desc')->get(); //get all posts
         
-        $posts = \App\Post::where('post_type', 'article')->orderBy('post_date', 'desc')->get(); //get all posts
         return view('admin/articles',array(
             'posts' => $posts
             ));

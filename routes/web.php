@@ -31,3 +31,6 @@ Route::resources([
 /*
 Route::get('/posts/grid', 'PostsController@grid');
 Route::resource('/posts', 'PostsController');*/
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
